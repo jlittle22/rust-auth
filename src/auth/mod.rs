@@ -5,7 +5,7 @@ use super::utility;
 use hmac::{Hmac, Mac};
 use jwt::{SignWithKey, VerifyWithKey};
 use mongodb::bson::{doc, Document};
-use mongodb::options::{ClientOptions, FindOptions};
+use mongodb::options::ClientOptions;
 use mongodb::{Client, Database};
 use sha2::Sha256;
 use std::collections::BTreeMap;
@@ -44,10 +44,7 @@ impl Auth {
             return Err(err.to_string());
         }
 
-        let mut client_options = result.unwrap();
-        client_options.app_name =
-            Some(utility::env("AUTH_PROJECT_NAME", Some("Auth")));
-
+        let client_options = result.unwrap();
         let result = Client::with_options(client_options);
 
         if let Err(err) = result {
